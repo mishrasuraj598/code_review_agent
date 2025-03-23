@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WorkflowDefinition xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="d">
+
+  <Workflow>
+    <!-- Trigger: When a new file is created in SharePoint -->
+    <Trigger>
+      <Type>Microsoft.SharePoint.WhenAFileIsCreated</Type>
+      <Properties>
+        <FolderUrl>https://company.sharepoint.com/sites/documents</FolderUrl>
+      </Properties>
+    </Trigger>
+
+    <!-- Action: Send an Email Notification -->
+    <Actions>
+      <Action>
+        <Type>Microsoft.Outlook.SendEmail</Type>
+        <Inputs>
+          <To>recipient@example.com</To>
+          <Subject>New File Uploaded: @{triggerBody()?['Name']}</Subject>
+          <Body>
+            A new file has been uploaded: @{triggerBody()?['Name']}<br/>
+            Location: @{triggerBody()?['Path']}<br/>
+          </Body>
+        </Inputs>
+      </Action>
+    </Actions>
+
+  </Workflow>
+</WorkflowDefinition>
